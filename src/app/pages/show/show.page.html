@@ -1,0 +1,41 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>{{show.name}}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card-content>
+        <ion-img [src]="show.image?.medium"></ion-img>
+        <ion-button shape="round" expand="full" color="dark" [routerLink]="['/show',show.id]" (click)="addToWatch()">
+            <ion-img src="assets/watching-dark.svg"></ion-img>
+            Add to watch list
+            <ion-img src="assets/watching-dark.svg"></ion-img>
+        </ion-button>
+    </ion-card-content>
+
+    <ion-card-content class="ion-text-justify">
+        <h1>Summary</h1>
+        <p [innerHtml]="show.summary"></p>
+    </ion-card-content>
+
+    <ion-card-content>
+        <h1>Seasons</h1>
+        <ion-accordion-group>
+            <ion-accordion [value]="'Season '+indexOfelement+1" *ngFor="let season of seasons;let indexOfelement=index;">
+                <ion-item slot="header">
+                    <ion-label>Season {{indexOfelement+1}}</ion-label>
+                </ion-item>
+                <ion-list slot="content">
+                    <ion-item *ngFor="let episode of season">
+                        <ion-list-header> {{episode.name}} </ion-list-header>
+                        <ion-text> E{{episode.number}} </ion-text>
+                    </ion-item>
+                </ion-list>
+            </ion-accordion>
+        </ion-accordion-group>
+    </ion-card-content>
+</ion-content>

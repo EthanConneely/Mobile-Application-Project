@@ -7,11 +7,11 @@ minimum requirements:
 
 The App must run - When the ionic serve command is issued, after cloning and installing modules I expect the app to open in the browser.
 The App should use:
-  - [ ] the built-in Data Binding properties – e.g. interpolation, two-way data binding.
-  - [ ] navigation - At some point your app must navigate between at least 4 pages.
-  - [ ] an Ionic Native/Cordova plugin.
-  - [ ] a http client to read JSON data from an external URL.
-  - [ ] Data Persistence.
+- [ ] the built-in Data Binding properties – e.g. interpolation, two-way data binding.
+- [ ] navigation - At some point your app must navigate between at least 4 pages.
+- [ ] an Ionic Native/Cordova plugin.
+- [ ] a http client to read JSON data from an external URL.
+- [ ] Data Persistence.
 - [x] The App must be structured in standard, organised and consistent fashion.
 - [ ] There must be a comment for each non-obvious line of code you add to the project.
 

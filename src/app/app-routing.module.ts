@@ -28,6 +28,11 @@ const routes: Routes = [
                 (m) => m.UpcomingPageModule
             ),
     },
+    {
+        path: "show/:id",
+        loadChildren: () =>
+            import("./pages/show/show.module").then((m) => m.ShowPageModule),
+    },
 ];
 @NgModule({
     imports: [
