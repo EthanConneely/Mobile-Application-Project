@@ -1,5 +1,7 @@
 {
-    "name": "ionic-app-base",
-    "integrations": {},
-    "type": "angular"
+  "name": "ionic-app-base",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
 }

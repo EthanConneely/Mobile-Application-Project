@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Route } from "@angular/router";
+import { Storage } from "@ionic/storage-angular";
 import { TvApiService } from "src/app/services/tv-api.service";
 
 @Component({
@@ -13,7 +14,11 @@ export class ShowPage implements OnInit {
 
     id: number;
 
-    constructor(private route: ActivatedRoute, private api: TvApiService) {}
+    constructor(
+        private route: ActivatedRoute,
+        private api: TvApiService,
+        private storage: Storage
+    ) {}
 
     ngOnInit() {
         this.id = +this.route.snapshot.paramMap.get("id");
@@ -35,7 +40,23 @@ export class ShowPage implements OnInit {
         });
     }
 
-    addToWatch() {
-        console.log(this.id);
+    async addToWatch() {
+        await this.storage.create();
+        let watchingList: any[] = await this.storage.get("watching");
+
+        if (watchingList == null) {
+            watchingList = [];
+        }
+
+        if (watchingList.includes(this.id) === false) {
+            watchingList.push(this.id);
+        }
+
+        console.log(watchingList);
+        await this.storage.set("watching", watchingList);
+    }
+
+    openInBrowser(url: string) {
+        this.openInBrowser(url);
     }
 }

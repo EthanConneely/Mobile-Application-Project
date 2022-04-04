@@ -5,22 +5,30 @@ import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
 
 import { IonicModule, IonicRouteStrategy } from "@ionic/angular";
+import { InAppBrowser } from "@awesome-cordova-plugins/in-app-browser/ngx";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { SafeurlPipe } from "./pipes/safeurl.pipe";
+import { IonicStorageModule } from "@ionic/storage-angular";
 
 @NgModule({
-    declarations: [AppComponent, SafeurlPipe],
+    declarations: [AppComponent],
     entryComponents: [],
     imports: [
         BrowserModule,
         IonicModule.forRoot(),
+        IonicStorageModule.forRoot(),
         AppRoutingModule,
         HttpClientModule,
         FormsModule,
     ],
-    providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+    providers: [
+        InAppBrowser,
+        {
+            provide: RouteReuseStrategy,
+            useClass: IonicRouteStrategy,
+        },
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -5,7 +5,15 @@
 </ion-header>
 
 <ion-content>
-    <ion-text color="medium">
+    <ion-text *ngIf="watching.length===0" color="medium">
         <h2 class="ion-text-center">Added shows appear here!</h2>
     </ion-text>
+    <ion-list *ngIf="watching.length!==0">
+        <ion-card *ngFor="let episode of watching">
+            <ion-card-header>
+                <ion-card-title>{{episode.name}}</ion-card-title>
+            </ion-card-header>
+            <ion-img [src]="episode.image.original" (click)="openShow()"></ion-img>
+        </ion-card>
+    </ion-list>
 </ion-content>

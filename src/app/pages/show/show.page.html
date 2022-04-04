@@ -25,13 +25,13 @@
     <ion-card-content>
         <h1>Seasons</h1>
         <ion-accordion-group>
-            <ion-accordion [value]="'Season '+indexOfelement+1" *ngFor="let season of seasons;let indexOfelement=index;">
+            <ion-accordion [value]="'Season ' + indexOfelement+1" *ngFor="let season of seasons;let indexOfelement=index;">
                 <ion-item slot="header">
                     <ion-label>Season {{indexOfelement+1}}</ion-label>
                 </ion-item>
                 <ion-list slot="content">
                     <ion-item *ngFor="let episode of season">
-                        <ion-list-header> {{episode.name}} </ion-list-header>
+                        <ion-list-header class="underline" (click)="openInBrowser(episode._links.self.url)"> {{episode.name}} </ion-list-header>
                         <ion-text> E{{episode.number}} </ion-text>
                     </ion-item>
                 </ion-list>

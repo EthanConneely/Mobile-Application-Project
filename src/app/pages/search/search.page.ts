@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
 import { TvApiService } from "src/app/services/tv-api.service";
 
 @Component({
