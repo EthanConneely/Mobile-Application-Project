@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { AfterViewInit, Component } from "@angular/core";
 import { Storage } from "@ionic/storage-angular";
 import { TvApiService } from "src/app/services/tv-api.service";
 
@@ -7,14 +7,19 @@ import { TvApiService } from "src/app/services/tv-api.service";
     templateUrl: "./watching.page.html",
     styleUrls: ["./watching.page.scss"],
 })
-export class WatchingPage implements OnInit {
+export class WatchingPage {
     watching: any[] = [];
 
     constructor(private api: TvApiService, private storage: Storage) {}
 
-    async ngOnInit() {
+    async ionViewWillEnter() {
+        this.watching = [];
         await this.storage.create();
-        const watchList: number[] = await this.storage.get("watching");
+        let watchList: number[] = await this.storage.get("watching");
+
+        if (watchList === null) {
+            watchList = [];
+        }
 
         for (const id of watchList) {
             const episode = await this.api.getShow(id).toPromise();
@@ -22,7 +27,5 @@ export class WatchingPage implements OnInit {
         }
     }
 
-    openShow() {
-        console.log("clicked");
-    }
+    openShow() {}
 }
