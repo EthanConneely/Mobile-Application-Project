@@ -1,0 +1,12 @@
+.timerOverlay {
+    position: absolute;
+
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%, -50%);
+
+    color: var(--ion-color-dark);
+    opacity: 0.8;
+    font-size: 3rem;
+    text-shadow: 3px 3px black;
+}

@@ -13,12 +13,24 @@ export class SearchPage implements OnInit {
 
     constructor(private api: TvApiService) {}
 
-    ngOnInit() {}
+    async ngOnInit() {
+        this.getRandomShow();
+    }
 
     updateSearchList() {
-        this.api.getSearch(this.searchValue).subscribe((data: any[]) => {
-            this.shows = data.map((v, i, a) => a[i].show);
-            console.log("Search Results: ", this.shows[0]);
+        if (this.searchValue === "") {
+            this.getRandomShow();
+        } else {
+            this.api.getSearch(this.searchValue).subscribe((data: any[]) => {
+                this.shows = data.map((v, i, a) => a[i].show);
+                console.log("Search Results: ", this.shows[0]);
+            });
+        }
+    }
+
+    getRandomShow() {
+        this.api.getRandomEpisodeFromShedule().subscribe((data: any[]) => {
+            this.shows = [data[Math.round(Math.random() * data.length)].show];
         });
     }
 }

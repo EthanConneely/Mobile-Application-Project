@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from "@angular/core";
+import { Component } from "@angular/core";
 import { Storage } from "@ionic/storage-angular";
 import { TvApiService } from "src/app/services/tv-api.service";
 
@@ -10,7 +10,7 @@ import { TvApiService } from "src/app/services/tv-api.service";
 export class WatchingPage {
     watching: any[] = [];
 
-    constructor(private api: TvApiService, private storage: Storage) {}
+    constructor(private api: TvApiService, private storage: Storage) { }
 
     async ionViewWillEnter() {
         this.watching = [];
@@ -27,5 +27,14 @@ export class WatchingPage {
         }
     }
 
-    openShow() {}
+    async unwatch(id: number) {
+        console.log(id);
+
+        await this.storage.create();
+        let watchList: number[] = await this.storage.get("watching");
+        watchList = watchList.filter((v, i, a): boolean => v !== id);
+        await this.storage.set("watching", watchList);
+
+        this.watching = this.watching.filter((v, i, a): boolean => v.id !== id);
+    }
 }

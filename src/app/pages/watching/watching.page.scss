@@ -1,0 +1,10 @@
+.unwatchButton {
+    position: absolute;
+
+    left: 50%;
+    bottom: 2%;
+    transform: translate(-50%, 0%);
+
+    color: var(--ion-color-dark);
+    text-shadow: 3px 3px black;
+}

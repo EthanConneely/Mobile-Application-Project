@@ -6,7 +6,7 @@ import { Observable } from "rxjs";
     providedIn: "root",
 })
 export class TvApiService {
-    constructor(private httpClient: HttpClient) {}
+    constructor(private httpClient: HttpClient) { }
 
     getSearch(query: string): Observable<any> {
         return this.httpClient.get(
@@ -28,5 +28,13 @@ export class TvApiService {
         return this.httpClient.get(
             "https://api.tvmaze.com/shows/" + id + "/seasons"
         );
+    }
+
+    getRandomEpisodeFromShedule(): Observable<any> {
+        return this.httpClient.get("https://api.tvmaze.com/schedule");
+    }
+
+    getNextEpisode(episode: any): Observable<any> {
+        return this.httpClient.get(episode._links.nextepisode.href);
     }
 }

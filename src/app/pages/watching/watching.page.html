@@ -11,9 +11,10 @@
     <ion-list *ngIf="watching.length!==0">
         <ion-card *ngFor="let episode of watching">
             <ion-card-header>
-                <ion-card-title>{{episode.name}}</ion-card-title>
+                <ion-card-title class="ion-text-center">{{episode.name}}</ion-card-title>
             </ion-card-header>
-            <ion-img [src]="episode.image.original" (click)="openShow()"></ion-img>
+            <ion-button class="unwatchButton" shape="round" color="dark" (click)="unwatch(episode.id)">Unwatch</ion-button>
+            <ion-img [src]="episode.image.original"></ion-img>
         </ion-card>
     </ion-list>
 </ion-content>
