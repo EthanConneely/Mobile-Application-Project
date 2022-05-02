@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Route } from "@angular/router";
+import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import { Storage } from "@ionic/storage-angular";
 import { TvApiService } from "src/app/services/tv-api.service";
 
@@ -17,8 +18,9 @@ export class ShowPage implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private api: TvApiService,
-        private storage: Storage
-    ) {}
+        private storage: Storage,
+        private iab: InAppBrowser
+    ) { }
 
     ngOnInit() {
         this.id = +this.route.snapshot.paramMap.get("id");
@@ -57,6 +59,7 @@ export class ShowPage implements OnInit {
     }
 
     openInBrowser(url: string) {
-        this.openInBrowser(url);
+        url = url.replace("api.", "");
+        this.iab.create(url);
     }
 }

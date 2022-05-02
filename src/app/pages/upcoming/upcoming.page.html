@@ -6,7 +6,7 @@
 
 <ion-content>
     <ion-text *ngIf="watching.length===0" color="medium">
-        <h2 class="ion-text-center">Added shows appear here!</h2>
+        <h2 class="ion-text-center">Upcoming episodes for shows appear here!</h2>
     </ion-text>
     <ion-list *ngIf="watching.length!==0">
         <ion-card *ngFor="let episode of watching">
