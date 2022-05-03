@@ -1,4 +1,5 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { NavigationEnd, Router } from "@angular/router";
 import { Storage } from "@ionic/storage-angular";
 import { TvApiService } from "src/app/services/tv-api.service";
 
@@ -7,34 +8,35 @@ import { TvApiService } from "src/app/services/tv-api.service";
     templateUrl: "./watching.page.html",
     styleUrls: ["./watching.page.scss"],
 })
-export class WatchingPage {
+export class WatchingPage implements OnInit {
     watching: any[] = [];
 
-    constructor(private api: TvApiService, private storage: Storage) { }
+    constructor(private api: TvApiService, private storage: Storage, private router: Router) { }
 
-    async ionViewWillEnter() {
-        this.watching = [];
-        await this.storage.create();
-        let watchList: number[] = await this.storage.get("watching");
-
-        if (watchList === null) {
-            watchList = [];
-        }
-
-        for (const id of watchList) {
-            const episode = await this.api.getShow(id).toPromise();
-            this.watching.push(episode);
-        }
+    ngOnInit(): void {
+        this.refreshWatching();
+        // For detecting navigations back from the sub page on watching
+        this.router.events.subscribe((evt) => {
+            if (!(evt instanceof NavigationEnd)) {
+                return;
+            }
+            if (!evt.url.includes("/watching")) {
+                return;
+            }
+            this.refreshWatching();
+        });
     }
 
-    async unwatch(id: number) {
-        console.log(id);
-
+    async refreshWatching() {
+        this.watching = [];
         await this.storage.create();
-        let watchList: number[] = await this.storage.get("watching");
-        watchList = watchList.filter((v, i, a): boolean => v !== id);
-        await this.storage.set("watching", watchList);
+        const watchList: number[] = await this.storage.get("watching") ?? [];
 
-        this.watching = this.watching.filter((v, i, a): boolean => v.id !== id);
+        for (const id of watchList) {
+            const episode = await this.api.getEpisodeFromId(id);
+            if (this.watching.includes(episode) === false) {
+                this.watching.push(episode);
+            }
+        }
     }
 }

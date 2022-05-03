@@ -5,16 +5,16 @@
 </ion-header>
 
 <ion-content>
-    <ion-text *ngIf="watching.length===0" color="medium">
+    <ion-text *ngIf="watching.length===0">
         <h2 class="ion-text-center">Added shows appear here!</h2>
     </ion-text>
     <ion-list *ngIf="watching.length!==0">
-        <ion-card *ngFor="let episode of watching">
+        <ion-card color="light" *ngFor="let episode of watching">
             <ion-card-header>
                 <ion-card-title class="ion-text-center">{{episode.name}}</ion-card-title>
             </ion-card-header>
-            <ion-button class="unwatchButton" shape="round" color="dark" (click)="unwatch(episode.id)">Unwatch</ion-button>
             <ion-img [src]="episode.image.original"></ion-img>
+            <ion-button class="unwatchButton" color="dark" shape="round" [routerLink]="['/show',episode.id]">More</ion-button>
         </ion-card>
     </ion-list>
 </ion-content>

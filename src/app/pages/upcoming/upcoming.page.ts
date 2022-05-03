@@ -22,18 +22,17 @@ export class UpcomingPage {
         }
 
         for (const id of watchList) {
-            const episode = await this.api.getShow(id).toPromise();
+            const episode = await this.api.getEpisodeFromId(id);
             episode.countdown = "";
 
             if (episode._links.nextepisode !== undefined) {
-                this.api.getNextEpisode(episode).subscribe((data) => {
-                    episode.next = data;
-                    this.watching.push(episode);
-                    if (episode.next !== null) {
-                        this.handleCountdown(episode);
-                        setInterval(() => this.handleCountdown(episode), 1000);
-                    }
-                });
+                const data = await this.api.getNextEpisode(episode);
+                episode.next = data;
+                this.watching.push(episode);
+                if (episode.next !== null) {
+                    this.handleCountdown(episode);
+                    setInterval(() => this.handleCountdown(episode), 1000);
+                }
             }
         }
     }

@@ -11,51 +11,67 @@ import { TvApiService } from "src/app/services/tv-api.service";
 })
 export class ShowPage implements OnInit {
     show: any = {};
-    seasons: any[] = [[]];
+    seasons = new Map<number, Array<any>>();
 
     id: number;
+
+    addToWatchList = true;
 
     constructor(
         private route: ActivatedRoute,
         private api: TvApiService,
         private storage: Storage,
         private iab: InAppBrowser
-    ) { }
+    ) {
 
-    ngOnInit() {
-        this.id = +this.route.snapshot.paramMap.get("id");
-
-        this.api.getShow(this.id).subscribe((data) => {
-            this.show = data;
-        });
-
-        this.api.getShowsEpisodes(this.id).subscribe((data: any[]) => {
-            data.forEach((episode) => {
-                console.log(episode.season);
-
-                if (this.seasons[episode.season - 1] === undefined) {
-                    this.seasons.push([]);
-                }
-                this.seasons[episode.season - 1].push(episode);
-            });
-            console.log(this.seasons);
-        });
     }
 
-    async addToWatch() {
+    async ngOnInit() {
+        // get the id of the show from the id passed from the router
+        this.id = +this.route.snapshot.paramMap.get("id");
+
+        this.show = await this.api.getEpisodeFromId(this.id);
+
+        const data = await this.api.getShowsEpisodes(this.id);
+
+        for (const episode of data) {
+            const eps = this.seasons.get(episode.season) ?? [];
+            eps.push(episode);
+            this.seasons.set(episode.season, eps);
+        }
+
         await this.storage.create();
-        let watchingList: any[] = await this.storage.get("watching");
+        const watchingList: any[] = await this.storage.get("watching") ?? [];
+        this.addToWatchList = watchingList.includes(this.id) === false;
+    }
 
-        if (watchingList == null) {
-            watchingList = [];
+    async toggleWatching() {
+        await this.storage.create();
+        let watchingList: any[] = await this.storage.get("watching") ?? [];
+
+        if (this.addToWatchList) {
+            // Add to watching
+            if (watchingList.includes(this.id) === false) {
+                watchingList.push(this.id);
+            }
+
+            await this.storage.set("watching", watchingList);
+        } else {
+            // Remove from watching
+            watchingList = watchingList.filter(id => id !== this.id);
+            await this.storage.set("watching", watchingList);
         }
 
-        if (watchingList.includes(this.id) === false) {
-            watchingList.push(this.id);
-        }
+        this.addToWatchList = watchingList.includes(this.id) === false;
+    }
 
-        console.log(watchingList);
-        await this.storage.set("watching", watchingList);
+    sleep(ms: number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async removeFromWatch() {
+        console.log(`addToWatch: ${this.id}`);
+
     }
 
     openInBrowser(url: string) {

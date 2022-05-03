@@ -11,7 +11,7 @@ export class SearchPage implements OnInit {
 
     shows: any[];
 
-    constructor(private api: TvApiService) {}
+    constructor(private api: TvApiService) { }
 
     async ngOnInit() {
         this.getRandomShow();
@@ -19,18 +19,16 @@ export class SearchPage implements OnInit {
 
     updateSearchList() {
         if (this.searchValue === "") {
-            this.getRandomShow();
+            this.getRandomShow(); // when search is cleared display random show
         } else {
             this.api.getSearch(this.searchValue).subscribe((data: any[]) => {
                 this.shows = data.map((v, i, a) => a[i].show);
-                console.log("Search Results: ", this.shows[0]);
             });
         }
     }
 
-    getRandomShow() {
-        this.api.getRandomEpisodeFromShedule().subscribe((data: any[]) => {
-            this.shows = [data[Math.round(Math.random() * data.length)].show];
-        });
+    async getRandomShow() {
+        const data = await this.api.getRandomEpisodeFromShedule();
+        this.shows = [data[Math.round(Math.random() * data.length)].show];
     }
 }

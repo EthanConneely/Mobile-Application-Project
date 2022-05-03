@@ -1,7 +1,11 @@
-.underline {
-    text-decoration: underline;
-}
-
-.clickable {
+.episode-title {
+    display: block;
+    width: 100%;
+    word-wrap: normal;
     cursor: pointer;
+    text-decoration: underline;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }

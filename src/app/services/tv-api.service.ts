@@ -1,6 +1,5 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
 
 @Injectable({
     providedIn: "root",
@@ -8,33 +7,34 @@ import { Observable } from "rxjs";
 export class TvApiService {
     constructor(private httpClient: HttpClient) { }
 
-    getSearch(query: string): Observable<any> {
+    getSearch(query: string) {
         return this.httpClient.get(
             "https://api.tvmaze.com/search/shows?q=" + query
         );
     }
 
-    getShow(id: number): Observable<any> {
-        return this.httpClient.get("https://api.tvmaze.com/shows/" + id);
+    getEpisodeFromId(id: number) {
+        return this.httpClient.get("https://api.tvmaze.com/shows/" + id).toPromise<any>();
     }
 
-    getShowsEpisodes(id: number): Observable<any> {
+    getShowsEpisodes(id: number) {
         return this.httpClient.get(
             "https://api.tvmaze.com/shows/" + id + "/episodes"
-        );
+        ).toPromise<any>();
+
     }
 
-    getShowsSeasons(id: number): Observable<any> {
+    getShowsSeasons(id: number) {
         return this.httpClient.get(
             "https://api.tvmaze.com/shows/" + id + "/seasons"
-        );
+        ).toPromise<any>();
     }
 
-    getRandomEpisodeFromShedule(): Observable<any> {
-        return this.httpClient.get("https://api.tvmaze.com/schedule");
+    getRandomEpisodeFromShedule() {
+        return this.httpClient.get("https://api.tvmaze.com/schedule").toPromise<any>();
     }
 
-    getNextEpisode(episode: any): Observable<any> {
-        return this.httpClient.get(episode._links.nextepisode.href);
+    getNextEpisode(episode: any) {
+        return this.httpClient.get(episode._links.nextepisode.href).toPromise<any>();
     }
 }
